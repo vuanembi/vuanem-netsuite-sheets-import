@@ -1,19 +1,12 @@
-const encode = (data: GoogleAppsScript.Base.Blob) => {
-    const encoded = Utilities.base64Encode(data.getBytes())
-    console.log(encoded)
-    const decoded = Utilities.base64Decode(encoded);
-    console.log(Utilities.newBlob(decoded).getDataAsString());
-    return data
-}
+const SERVICE_URL =
+    'https://us-central1-voltaic-country-280607.cloudfunctions.net/vuanem-ecommerce-service-dev/netsuite/task/csv_import';
 
-const post = (payload: GoogleAppsScript.Base.Blob) => {
-    const url = 'https://webhook.site/5dda66a0-6a21-4e27-8b55-abbc0f9dddac';
+const post = <T>(data: T) => {
+    const url = SERVICE_URL;
     const res = UrlFetchApp.fetch(url, {
-        payload: {
-            file: payload,
-        },
+        contentType: 'application/json',
+        payload: JSON.stringify({ data }),
         method: 'post',
     });
-    console.log(res.getContentText);
-    return res.getBlob()
+    return JSON.parse(res.getContentText());
 };

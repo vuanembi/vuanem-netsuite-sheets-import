@@ -11,15 +11,26 @@
     </head>
     <body>
         <script>
+            const onSubmitCallback = (text, className) => (data) => {
+                const divEl = document.createElement('div');
+                divEl.className = `alert ${className} mt-3`;
+                divEl.innerText = text;
+                document.querySelector('#container').appendChild(divEl);
+            };
+            const onSubmitSuccess = onSubmitCallback('Success', 'alert-success');
+            const onSubmitFailure = onSubmitCallback('Success', 'alert-danger');
+
             const submitHandler = (formObject) => {
-                google.script.run.handleForm(formObject);
+                google.script.run
+                    .withSuccessHandler(onSubmitSuccess)
+                    .withFailureHandler(onSubmitSuccess)
+                    .importCsvService(formObject);
             };
 
             const buildForm = (options) => {
                 console.log(options);
 
                 const formEl = document.createElement('form');
-                formEl.className = 'mt-3';
 
                 const optionsSelectEl = document.createElement('select');
                 optionsSelectEl.className = 'form-select mb-3';
@@ -53,11 +64,13 @@
                             e.preventDefault(),
                         ),
                     );
-                const options = google.script.run
-                    .withSuccessHandler(buildForm)
-                    .getConfig();
             });
+            google.script.run.withSuccessHandler(buildForm).getConfig();
         </script>
-        <div id="container" class="container"></div>
+        <div id="container" class="container mt-3">
+            <div class="alert alert-primary" role="alert">
+                A simple primary alert—check it out!
+            </div>
+        </div>
     </body>
 </html>

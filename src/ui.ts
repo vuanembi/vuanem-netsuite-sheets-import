@@ -2,7 +2,7 @@ const ui = SpreadsheetApp.getUi();
 
 const onOpen = () => {
     ui.createMenu('VNBI - NetSuite')
-        .addItem('Import CSV', 'showSideBar')
+        .addItem('Show Side Bar', 'showSideBar')
         .addToUi();
 };
 

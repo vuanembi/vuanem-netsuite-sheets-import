@@ -17,13 +17,9 @@ const getConfig = (): Config[] =>
             sheetName,
         }));
 
-const handleForm = (formObject) => {
-    console.log(formObject);
-};
-
-const getData = (): GoogleAppsScript.Base.Blob => {
+const getData = (sheetName: string) => {
     const ssId = ss.getId();
-    const importSheet = ss.getSheetByName(IMPORT_SHEET);
+    const importSheet = ss.getSheetByName(sheetName);
     const importSheetId = importSheet.getSheetId().toString();
 
     const res = UrlFetchApp.fetch(
@@ -33,6 +29,5 @@ const getData = (): GoogleAppsScript.Base.Blob => {
             headers: { Authorization: `Bearer ${ScriptApp.getOAuthToken()}` },
         },
     );
-    console.log(res.getContentText());
-    return res.getBlob();
+    return res.getContentText();
 };
