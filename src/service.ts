@@ -9,5 +9,5 @@ const importCsvService = ({ config }) => {
         id: importId,
         data: getData(sheetName),
     };
-    post(payload);
+    return post(payload);
 };

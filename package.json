@@ -2,12 +2,9 @@
     "name": "vuanem-netsuite-sheets-import",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
         "open": "clasp open -A .clasprc.json",
-        "push": "clasp push -A .clasprc.json",
-        "deploy:dev": "clasp deploy -d dev -i AKfycbxEUmmjCbW4SevxPsex1h_Y6oO9gVHZhTgrmzble_ifBMHdBBHFqxsWW6attlO94k7OVg -A .clasprc.json",
-        "deploy_prod": "clasp deploy -d prod -i AKfycbxCSKGtmI0hvmidDM9f-akC7YG-BHZl22amVZh9HwwTjWhxreZi9KOJz25UmGh0VIt-5g -A .clasprc.json"
+        "push": "clasp push -A .clasprc.json"
     },
     "keywords": [],
     "author": "",

@@ -11,14 +11,21 @@
     </head>
     <body>
         <script>
-            const onSubmitCallback = (text, className) => (data) => {
-                const divEl = document.createElement('div');
-                divEl.className = `alert ${className} mt-3`;
-                divEl.innerText = text;
-                document.querySelector('#container').appendChild(divEl);
-            };
-            const onSubmitSuccess = onSubmitCallback('Success', 'alert-success');
-            const onSubmitFailure = onSubmitCallback('Success', 'alert-danger');
+            const onSubmitCallback =
+                (text) =>
+                ({ data }) => {
+                    const pEl = document.createElement('p');
+                    pEl.innerText = data || 'Error';
+
+                    const divEl = document.createElement('div');
+                    divEl.className = `alert alert-primary mt-3`;
+                    divEl.setAttribute('style', 'overflow-wrap:break-word');
+                    divEl.appendChild(pEl);
+
+                    document.querySelector('#container').appendChild(divEl);
+                };
+            const onSubmitSuccess = onSubmitCallback('Success');
+            const onSubmitFailure = onSubmitCallback('Failure');
 
             const submitHandler = (formObject) => {
                 google.script.run
@@ -28,8 +35,6 @@
             };
 
             const buildForm = (options) => {
-                console.log(options);
-
                 const formEl = document.createElement('form');
 
                 const optionsSelectEl = document.createElement('select');
@@ -68,8 +73,8 @@
             google.script.run.withSuccessHandler(buildForm).getConfig();
         </script>
         <div id="container" class="container mt-3">
-            <div class="alert alert-primary" role="alert">
-                A simple primary alert—check it out!
+            <div class="alert alert-info" role="alert">
+                Date must be in YYYY-MM-DD
             </div>
         </div>
     </body>
