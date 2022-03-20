@@ -3,8 +3,8 @@ type Data = {
     data: string;
 };
 
-const importCsvService = ({ config }) => {
-    const [importId, sheetName] = config.split('-');
+const importCsvService = ({ option }) => {
+    const [importId, sheetName] = option.split('-');
     const payload = {
         id: importId,
         data: getData(sheetName),

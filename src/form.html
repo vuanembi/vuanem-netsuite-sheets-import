@@ -8,57 +8,40 @@
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
             crossorigin="anonymous"
         />
-    </head>
-    <body>
         <script>
-            const onSubmitCallback =
-                (text) =>
-                ({ data }) => {
-                    const pEl = document.createElement('p');
-                    pEl.innerText = data || 'Error';
+            const getSubmitSpinner = () =>
+                document.querySelector('#submitSpinner');
 
-                    const divEl = document.createElement('div');
-                    divEl.className = `alert alert-primary mt-3`;
-                    divEl.setAttribute('style', 'overflow-wrap:break-word');
-                    divEl.appendChild(pEl);
-
-                    document.querySelector('#container').appendChild(divEl);
-                };
-            const onSubmitSuccess = onSubmitCallback('Success');
-            const onSubmitFailure = onSubmitCallback('Failure');
+            const onSubmitCallback = ({ data }) => {
+                getSubmitSpinner().setAttribute('hidden', 'hidden');
+                document.querySelector('#callbackText').innerText =
+                    data || 'Error';
+                document
+                    .querySelector('#callback')
+                    .classList.add(data ? 'alert-success' : 'alert-danger');
+            };
 
             const submitHandler = (formObject) => {
+                document
+                    .querySelector('#optionSubmit')
+                    .classList.add('disabled');
+
+                getSubmitSpinner().removeAttribute('hidden');
+
                 google.script.run
-                    .withSuccessHandler(onSubmitSuccess)
-                    .withFailureHandler(onSubmitSuccess)
+                    .withSuccessHandler(onSubmitCallback)
+                    .withFailureHandler(onSubmitCallback)
                     .importCsvService(formObject);
             };
 
             const buildForm = (options) => {
-                const formEl = document.createElement('form');
-
-                const optionsSelectEl = document.createElement('select');
-                optionsSelectEl.className = 'form-select mb-3';
-                optionsSelectEl.setAttribute('name', 'config');
-
+                const optionsSelectEl = document.querySelector('#optionSelect');
                 options.forEach(({ importId, sheetName }) => {
                     const optionEl = document.createElement('option');
                     optionEl.setAttribute('value', `${importId}-${sheetName}`);
                     optionEl.innerText = `ID: ${importId} | Sheet: ${sheetName}`;
                     optionsSelectEl.appendChild(optionEl);
                 });
-
-                const formButtonEl = document.createElement('button');
-                formButtonEl.setAttribute('name', 'submit');
-                formButtonEl.setAttribute('type', 'submit');
-                formButtonEl.className = 'btn btn-primary';
-                formButtonEl.innerText = 'Submit';
-
-                formEl.appendChild(optionsSelectEl);
-                formEl.appendChild(formButtonEl);
-
-                formEl.setAttribute('onsubmit', 'submitHandler(this)');
-                document.querySelector('#container').appendChild(formEl);
             };
 
             window.addEventListener('load', () => {
@@ -72,9 +55,30 @@
             });
             google.script.run.withSuccessHandler(buildForm).getConfig();
         </script>
+    </head>
+    <body>
         <div id="container" class="container mt-3">
             <div class="alert alert-info" role="alert">
                 Date must be in YYYY-MM-DD
+            </div>
+            <form onsubmit="submitHandler(this)">
+                <select
+                    id="optionSelect"
+                    class="form-select mb-3"
+                    name="option"
+                ></select>
+                <button id="optionSubmit" class="btn btn-primary">
+                    Submit
+                    <span
+                        id="submitSpinner"
+                        class="spinner-grow spinner-grow-sm"
+                        role="status"
+                        hidden
+                    ></span>
+                </button>
+            </form>
+            <div id="callback" style="overflow-wrap: break-word">
+                <p id="callbackText" class="alert mt-3"></p>
             </div>
         </div>
     </body>
