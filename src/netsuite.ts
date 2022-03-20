@@ -1,6 +1,6 @@
 type ServiceResponse = {
     data?: string;
-}
+};
 
 const SERVICE_URL =
     'https://us-central1-voltaic-country-280607.cloudfunctions.net/vuanem-ecommerce-service-dev/netsuite/task/csv_import';
@@ -12,7 +12,13 @@ const post = <T>(data: T): ServiceResponse => {
         payload: JSON.stringify({ data }),
         method: 'post',
     });
-    const results = res.getContentText();
-    console.log(results);
-    return JSON.parse(res.getContentText());
+
+    const resCode = res.getResponseCode();
+    const resText = res.getContentText();
+
+    if (resCode !== 200) {
+        throw new Error(resText);
+    } else {
+        return JSON.parse(resText);
+    }
 };
