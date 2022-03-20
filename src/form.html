@@ -39,7 +39,7 @@
                 options.forEach(({ importId, sheetName }) => {
                     const optionEl = document.createElement('option');
                     optionEl.setAttribute('value', `${importId}-${sheetName}`);
-                    optionEl.innerText = `ID: ${importId} | Sheet: ${sheetName}`;
+                    optionEl.innerText = `[${importId}] ${sheetName}`;
                     optionsSelectEl.appendChild(optionEl);
                 });
             };
