@@ -7,7 +7,7 @@ const onOpen = () => {
 };
 
 const importCSVService = () => {
-    const html = HtmlService.createTemplateFromFile('form')
+    const html = HtmlService.createTemplateFromFile('import-csv')
         .evaluate()
         .setTitle('Import CSV');
     ui.showSidebar(html);
